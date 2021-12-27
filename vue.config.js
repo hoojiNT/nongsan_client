@@ -1,4 +1,5 @@
 const { mergeSassVariables } = require('@vuetify/cli-plugin-utils')
+const path = require('path')
 
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production' ? '/demo/materio-vuetify-vuejs-admin-template-free/demo' : '/',
@@ -18,4 +19,12 @@ module.exports = {
         .tap(opt => mergeSassVariables(opt, "'@/styles/variables.scss';"))
     })
   },
+
+  // devServer: {
+  //   static: {
+  //     directory: path.join(__dirname, 'public'),
+  //   },
+  //   compress: true,
+  //   port: 9000,
+  // },
 }

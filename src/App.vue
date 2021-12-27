@@ -18,6 +18,18 @@ export default {
     LayoutContent,
     UpgradeToPro,
   },
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn
+    },
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('logout').then(() => {
+        this.$router.push('/login')
+      })
+    },
+  },
   setup() {
     const { route } = useRouter()
 

@@ -36,7 +36,7 @@ module.exports = {
       },
     ],
 
-    'linebreak-style': 'off',
+    // 'linebreak-style': 'off',
 
     // add new line above comment
     'newline-before-return': 'error',
@@ -57,4 +57,4 @@ module.exports = {
 
     'global-require': 'off',
   },
-}
+};

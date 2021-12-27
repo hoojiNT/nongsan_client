@@ -1,5 +1,7 @@
+/* eslint-disable newline-before-return */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -44,16 +46,16 @@ const routes = [
     component: () => import('@/views/pages/account-settings/AccountSettings.vue'),
   },
   {
-    path: '/pages/login',
-    name: 'pages-login',
+    path: '/login',
+    name: 'login',
     component: () => import('@/views/pages/Login.vue'),
     meta: {
       layout: 'blank',
     },
   },
   {
-    path: '/pages/register',
-    name: 'pages-register',
+    path: '/register',
+    name: 'register',
     component: () => import('@/views/pages/Register.vue'),
     meta: {
       layout: 'blank',
@@ -79,4 +81,15 @@ const router = new VueRouter({
   routes,
 })
 
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (store.getters.isLoggedIn) {
+      next()
+      return
+    }
+    next('/login')
+  } else {
+    next()
+  }
+})
 export default router
