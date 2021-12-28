@@ -73,6 +73,11 @@ const routes = [
     path: '*',
     redirect: 'error-404',
   },
+  {
+    path: '/supplier',
+    name: 'supplier',
+    component: () => import('@/views/pages/manageSupplier/Supplier.vue'),
+  },
 ]
 
 const router = new VueRouter({

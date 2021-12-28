@@ -11,6 +11,8 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
 
+    'no-unused-expressions': 'off',
+
     // recommended by Vetur
     'vue/html-self-closing': 'off',
 
@@ -36,7 +38,7 @@ module.exports = {
       },
     ],
 
-    // 'linebreak-style': 'off',
+    'linebreak-style': 'off',
 
     // add new line above comment
     'newline-before-return': 'error',
@@ -55,6 +57,13 @@ module.exports = {
       },
     ],
 
+    'vue/valid-v-slot': [
+      'error',
+      {
+        allowModifiers: true,
+      },
+    ],
+
     'global-require': 'off',
   },
-};
+}
