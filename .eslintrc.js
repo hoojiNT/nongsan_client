@@ -57,13 +57,6 @@ module.exports = {
       },
     ],
 
-    'vue/valid-v-slot': [
-      'error',
-      {
-        allowModifiers: true,
-      },
-    ],
-
     'global-require': 'off',
   },
 }
