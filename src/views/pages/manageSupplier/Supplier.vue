@@ -1,11 +1,11 @@
 <template>
-  <v-data-table :headers="headers" :items="desserts" sort-by="calories" class="elevation-1">
+  <v-data-table :headers="headers" :items="suppliers" sort-by="id" class="elevation-1">
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>My CRUD</v-toolbar-title>
+        <v-toolbar-title>NHÀ CUNG CẤP</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
-        <v-dialog v-model="dialog" max-width="500px">
+        <v-dialog v-model="dialog" max-width="800px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on"> New Item </v-btn>
           </template>
@@ -16,23 +16,25 @@
 
             <v-card-text>
               <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.name" label="Dessert name"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.calories" label="Calories"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.fat" label="Fat (g)"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.carbs" label="Carbs (g)"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
+                <v-col>
+                  <v-row cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.name" label="Tên NCC"></v-text-field>
+                  </v-row>
+                  <v-row col="12">
+                    <v-col cols="6" sm="6" md="4">
+                      <v-text-field v-model="editedItem.phone" label="SĐT"></v-text-field>
+                    </v-col>
+                    <v-col cols="6" sm="6" md="4">
+                      <v-text-field v-model="editedItem.address" label="Địa chỉ"></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <v-row cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
+                  </v-row>
+                  <!-- <v-col cols="12" sm="6" md="4">
                     <v-text-field v-model="editedItem.protein" label="Protein (g)"></v-text-field>
-                  </v-col>
-                </v-row>
+                  </v-col> -->
+                </v-col>
               </v-container>
             </v-card-text>
 
@@ -67,6 +69,9 @@
 </template>
 
 <script>
+import common from '@/common/common'
+import axios from 'axios'
+const apiURL = common._API_URL + 'api/Supplier/'
 export default {
   data: () => ({
     dialog: false,
@@ -76,29 +81,29 @@ export default {
         text: 'Mã',
         align: 'start',
         sortable: false,
-        value: 'name',
+        value: 'id',
       },
-      { text: 'Tên NCC', value: 'calories' },
-      { text: 'SĐT', value: 'fat' },
-      { text: 'Địa chỉ', value: 'carbs' },
-      { text: 'Email', value: 'protein' },
+      { text: 'Tên NCC', value: 'name' },
+      { text: 'SĐT', value: 'phone' },
+      { text: 'Địa chỉ', value: 'address' },
+      { text: 'Email', value: 'email' },
       { text: 'Chức năng', value: 'actions', sortable: false },
     ],
-    desserts: [],
+    suppliers: [],
     editedIndex: -1,
     editedItem: {
+      id: '',
       name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
+      phone: '',
+      address: '',
+      email: '',
     },
     defaultItem: {
+      id: '',
       name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
+      phone: '',
+      address: '',
+      email: '',
     },
   }),
 
@@ -123,94 +128,33 @@ export default {
 
   methods: {
     initialize() {
-      this.desserts = [
-        {
-          name: 'Frozen Yogurt',
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-        },
-        {
-          name: 'Ice cream sandwich',
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-        },
-        {
-          name: 'Eclair',
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-        },
-        {
-          name: 'Cupcake',
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-        },
-        {
-          name: 'Gingerbread',
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-        },
-        {
-          name: 'Jelly bean',
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-        },
-        {
-          name: 'Lollipop',
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-        },
-        {
-          name: 'Honeycomb',
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-        },
-        {
-          name: 'Donut',
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-        },
-        {
-          name: 'KitKat',
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-        },
-      ]
+      axios
+        .get(`${apiURL}GetAllSupplier`)
+        .then(res => {
+          if (res.data != null && res?.status === 200) {
+            // commit('setAllCustomer', res.data)
+            this.suppliers = res.data
+          }
+        })
+        .catch(err => console.log(err))
     },
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item)
+      console.log('editItem: ', item)
+      this.editedIndex = this.suppliers.indexOf(item)
+      console.log(this.suppliers.indexOf(item))
       this.editedItem = { ...item }
       this.dialog = true
     },
 
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item)
+      this.editedIndex = this.suppliers.indexOf(item)
       this.editedItem = { ...item }
       this.dialogDelete = true
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1)
+      this.suppliers.splice(this.editedIndex, 1)
       this.closeDelete()
     },
 
@@ -231,10 +175,28 @@ export default {
     },
 
     save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem)
+      const edtIdx = this.editedIndex
+      let edtItm = this.editedItem
+      if (edtIdx > -1) {
+        axios
+          .put(`${apiURL}UpdateSupplier/`, edtItm)
+          .then(res => {
+            if (res.status === 200) {
+              console.log('editedIndex:: ', edtIdx)
+              console.log('this.editedItem:: ', edtItm)
+              Object.assign(this.suppliers[edtIdx], edtItm)
+            }
+          })
+          .catch(err => console.log(err))
       } else {
-        this.desserts.push(this.editedItem)
+        axios
+          .post(`${apiURL}InsertSupplier/`, edtItm)
+          .then(res => {
+            if (res.status === 200) {
+              this.suppliers.push(edtItm)
+            }
+          })
+          .catch(err => console.log(err))
       }
       this.close()
     },

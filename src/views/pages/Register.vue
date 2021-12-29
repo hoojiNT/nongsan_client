@@ -5,10 +5,7 @@
       <v-card class="auth-card">
         <!-- logo -->
         <v-card-title class="d-flex align-center justify-center py-7">
-          <router-link
-            to="/"
-            class="d-flex align-center"
-          >
+          <router-link to="/" class="d-flex align-center">
             <v-img
               :src="require('@/assets/images/logos/logo.svg')"
               max-height="30px"
@@ -66,10 +63,7 @@
               @click:append="isPasswordVisible = !isPasswordVisible"
             ></v-text-field>
 
-            <v-checkbox
-              hide-details
-              class="mt-1"
-            >
+            <v-checkbox hide-details class="mt-1">
               <template #label>
                 <div class="d-flex align-center flex-wrap">
                   <span class="me-2">I agree to</span><a href="javascript:void(0)">privacy policy &amp; terms</a>
@@ -77,12 +71,7 @@
               </template>
             </v-checkbox>
 
-            <v-btn
-              block
-              color="primary"
-              class="mt-6"
-              @click="register"
-            >
+            <v-btn block color="primary" class="mt-6" @click="register">
               Sign Up
             </v-btn>
           </v-form>
@@ -107,12 +96,7 @@
 
         <!-- social link -->
         <v-card-actions class="d-flex justify-center">
-          <v-btn
-            v-for="link in socialLink"
-            :key="link.icon"
-            icon
-            class="ms-1"
-          >
+          <v-btn v-for="link in socialLink" :key="link.icon" icon class="ms-1">
             <v-icon :color="$vuetify.theme.dark ? link.colorInDark : link.color">
               {{ link.icon }}
             </v-icon>
@@ -129,20 +113,10 @@
     />
 
     <!-- tree -->
-    <v-img
-      class="auth-tree"
-      width="247"
-      height="185"
-      src="@/assets/images/misc/tree.png"
-    ></v-img>
+    <v-img class="auth-tree" width="247" height="185" src="@/assets/images/misc/tree.png"></v-img>
 
     <!-- tree  -->
-    <v-img
-      class="auth-tree-3"
-      width="377"
-      height="289"
-      src="@/assets/images/misc/tree-3.png"
-    ></v-img>
+    <v-img class="auth-tree-3" width="377" height="289" src="@/assets/images/misc/tree-3.png"></v-img>
   </div>
 </template>
 
