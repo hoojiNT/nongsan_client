@@ -40,9 +40,9 @@
         <nav-menu-link title="Register" :to="{ name: 'register' }" target="_blank"></nav-menu-link>
       </nav-menu-group>
       <nav-menu-group title="Quản lý" :icon="icons.mdiAccountChildCircle">
-        <nav-menu-link title="Khách hàng" :to="{ name: 'error-404' }" target="_blank"></nav-menu-link>
-        <nav-menu-link title="Nhân sự" :to="{ name: 'error-404' }" target="_blank"></nav-menu-link>
-        <nav-menu-link title="ERP" :to="{ name: 'error-404' }" target="_blank"></nav-menu-link>
+        <nav-menu-link title="Khách hàng" :to="{ name: 'customer' }" ></nav-menu-link>
+        <nav-menu-link title="Nhân sự" :to="{ name: 'employee' }" ></nav-menu-link>
+        <nav-menu-link title="Hàng hóa" :to="{ name: 'product' }" ></nav-menu-link>
         <nav-menu-link title="Doanh thu" :to="{ name: 'error-404' }" target="_blank"></nav-menu-link>
         <nav-menu-link title="Chương trình khuyến mãi" :to="{ name: 'error-404' }" target="_blank"></nav-menu-link>
         <nav-menu-link title="Nhà cung cấp" :to="{ name: 'supplier' }"></nav-menu-link>

@@ -78,6 +78,21 @@ const routes = [
     name: 'supplier',
     component: () => import('@/views/pages/manageSupplier/Supplier.vue'),
   },
+  {
+    path: '/customer',
+    name: 'customer',
+    component: () => import('@/views/pages/manageCustomer/Customer.vue'),
+  },
+  {
+    path: '/employee',
+    name: 'employee',
+    component: () => import('@/views/pages/manageEmployee/Employee.vue'),
+  },
+  {
+    path: '/product',
+    name: 'product',
+    component: () => import('@/views/pages/manageProduct/Product.vue'),
+  },
 ]
 
 const router = new VueRouter({
