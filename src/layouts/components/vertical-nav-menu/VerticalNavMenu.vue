@@ -22,9 +22,7 @@
           class="app-logo me-3"
         ></v-img>
         <v-slide-x-transition>
-          <h2 class="app-title text--primary">
-            NONG SAN
-          </h2>
+          <h2 class="app-title text--primary">NONG SAN</h2>
         </v-slide-x-transition>
       </router-link>
     </div>
@@ -50,15 +48,6 @@
         <nav-menu-link title="Nhà cung cấp" :to="{ name: 'supplier' }"></nav-menu-link>
       </nav-menu-group>
     </v-list>
-    <a href="https://themeselection.com/products/materio-vuetify-vuejs-admin-template" target="_blank" rel="nofollow">
-      <v-img
-        :src="require(`@/assets/images/pro/upgrade-banner-${$vuetify.theme.dark ? 'dark' : 'light'}.png`)"
-        alt="upgrade-banner"
-        transition="scale-transition"
-        class="upgrade-banner mx-auto"
-        max-width="230"
-      ></v-img>
-    </a>
   </v-navigation-drawer>
 </template>
 

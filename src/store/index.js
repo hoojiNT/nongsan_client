@@ -81,5 +81,7 @@ export default new Vuex.Store({
       })
     },
   },
-  modules: {},
+  modules: {
+    supplier: () => import('@/store/modules/supplier.module'),
+  },
 })
