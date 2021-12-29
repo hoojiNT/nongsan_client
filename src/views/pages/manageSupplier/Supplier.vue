@@ -92,14 +92,14 @@ export default {
     suppliers: [],
     editedIndex: -1,
     editedItem: {
-      id: '',
+      id: 0,
       name: '',
       phone: '',
       address: '',
       email: '',
     },
     defaultItem: {
-      id: '',
+      id: 0,
       name: '',
       phone: '',
       address: '',
