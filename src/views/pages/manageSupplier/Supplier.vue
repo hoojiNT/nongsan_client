@@ -132,7 +132,6 @@ export default {
         .get(`${apiURL}GetAllSupplier`)
         .then(res => {
           if (res.data != null && res?.status === 200) {
-            // commit('setAllCustomer', res.data)
             this.suppliers = res.data
           }
         })
@@ -150,12 +149,20 @@ export default {
     deleteItem(item) {
       this.editedIndex = this.suppliers.indexOf(item)
       this.editedItem = { ...item }
+      console.log(this.editedItem)
       this.dialogDelete = true
     },
 
     deleteItemConfirm() {
-      this.suppliers.splice(this.editedIndex, 1)
-      this.closeDelete()
+      var itemid = this.editedItem.id
+      var edtIdx = this.editedIndex
+      console.log('deleteItemConfirm:', itemid)
+      axios.delete(`${apiURL}DeleteSupplier/?id=${itemid}`).then(res => {
+        if (res.status === 200) {
+          this.suppliers.splice(edtIdx, 1)
+          this.closeDelete()
+        }
+      })
     },
 
     close() {
@@ -193,7 +200,7 @@ export default {
           .post(`${apiURL}InsertSupplier/`, edtItm)
           .then(res => {
             if (res.status === 200) {
-              this.suppliers.push(edtItm)
+              this.suppliers.push(res.data)
             }
           })
           .catch(err => console.log(err))
