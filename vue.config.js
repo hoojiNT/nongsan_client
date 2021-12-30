@@ -19,6 +19,9 @@ module.exports = {
         .tap(opt => mergeSassVariables(opt, "'@/styles/variables.scss';"))
     })
   },
+  configureWebpack: {
+    devtool: 'source-map',
+  },
 
   // devServer: {
   //   static: {

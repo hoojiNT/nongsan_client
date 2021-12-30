@@ -12,23 +12,17 @@
               max-width="30px"
               alt="logo"
               contain
-              class="me-3 "
+              class="me-3"
             ></v-img>
 
-            <h2 class="text-2xl font-weight-semibold">
-              Materio
-            </h2>
+            <h2 class="text-2xl font-weight-semibold">Materio</h2>
           </router-link>
         </v-card-title>
 
         <!-- title -->
         <v-card-text>
-          <p class="text-2xl font-weight-semibold text--primary mb-2">
-            Adventure starts here 🚀
-          </p>
-          <p class="mb-2">
-            Make your app management easy and fun!
-          </p>
+          <p class="text-2xl font-weight-semibold text--primary mb-2">Adventure starts here 🚀</p>
+          <p class="mb-2">Make your app management easy and fun!</p>
         </v-card-text>
 
         <!-- login form -->
@@ -71,20 +65,14 @@
               </template>
             </v-checkbox>
 
-            <v-btn block color="primary" class="mt-6" @click="register">
-              Sign Up
-            </v-btn>
+            <v-btn block color="primary" class="mt-6" @click="register"> Sign Up </v-btn>
           </v-form>
         </v-card-text>
 
         <!-- create new account  -->
         <v-card-text class="d-flex align-center justify-center flex-wrap mt-2">
-          <span class="me-2">
-            Already have an account?
-          </span>
-          <router-link :to="{ name: 'pages-login' }">
-            Sign in instead
-          </router-link>
+          <span class="me-2"> Already have an account? </span>
+          <router-link :to="{ name: 'pages-login' }"> Sign in instead </router-link>
         </v-card-text>
 
         <!-- divider -->
@@ -128,7 +116,7 @@ import { ref } from '@vue/composition-api'
 export default {
   data() {
     return {
-      name: '',
+      username: '',
       email: '',
       password: '',
       password_confirmation: '',
@@ -138,13 +126,13 @@ export default {
   methods: {
     register() {
       const data = {
-        name: this.name,
+        username: this.username,
         email: this.email,
         password: this.password,
-        is_admin: this.is_admin,
+        // is_admin: this.is_admin,
       }
       this.$store
-        .dispatch('register', data)
+        .dispatch('auth/register', data)
         .then(() => this.$router.push('/'))
         .catch(err => console.log(err))
     },

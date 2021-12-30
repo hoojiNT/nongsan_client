@@ -4,10 +4,7 @@
       <v-card class="auth-card">
         <!-- logo -->
         <v-card-title class="d-flex align-center justify-center py-7">
-          <router-link
-            to="/"
-            class="d-flex align-center"
-          >
+          <router-link to="/" class="d-flex align-center">
             <v-img
               :src="require('@/assets/images/logos/logo.svg')"
               max-height="30px"
@@ -17,27 +14,21 @@
               class="me-3"
             ></v-img>
 
-            <h2 class="text-2xl font-weight-semibold">
-              NONG SAN
-            </h2>
+            <h2 class="text-2xl font-weight-semibold">NONG SAN</h2>
           </router-link>
         </v-card-title>
 
         <!-- title -->
         <v-card-text>
-          <p class="text-2xl font-weight-semibold text--primary mb-2">
-            Welcome to NONG SAN! 👋🏻
-          </p>
-          <p class="mb-2">
-            Please sign-in to your account and start the adventure
-          </p>
+          <p class="text-2xl font-weight-semibold text--primary mb-2">Welcome to NONG SAN! 👋🏻</p>
+          <p class="mb-2">Please sign-in to your account and start the adventure</p>
         </v-card-text>
 
         <!-- login form -->
         <v-card-text>
           <v-form>
             <v-text-field
-              v-model="email"
+              v-model="username"
               outlined
               label="Email"
               placeholder="john@example.com"
@@ -57,26 +48,15 @@
             ></v-text-field>
 
             <div class="d-flex align-center justify-space-between flex-wrap">
-              <v-checkbox
-                label="Remember Me"
-                hide-details
-                class="me-3 mt-1"
-              ></v-checkbox>
+              <v-checkbox label="Remember Me" hide-details class="me-3 mt-1"></v-checkbox>
 
               <!-- forgot link -->
-              <a
-                href="javascript:void(0)"
-                class="mt-1"
-              > Forgot Password? </a>
+              <a href="javascript:void(0)" class="mt-1"> Forgot Password? </a>
             </div>
 
-            <v-btn
-              block
-              color="primary"
-              class="mt-6"
-              @click="login"
-            >
-              Login
+            <v-btn block color="primary" class="mt-6" @click="handleLogin" :disabled="loading">
+              <span v-show="loading" class="spinner-border spinner-border-sm"></span>
+              <span>Login</span>
             </v-btn>
           </v-form>
         </v-card-text>
@@ -84,9 +64,7 @@
         <!-- create new account  -->
         <v-card-text class="d-flex align-center justify-center flex-wrap mt-2">
           <span class="me-2"> New on our platform? </span>
-          <router-link :to="{ name: 'pages-register' }">
-            Create an account
-          </router-link>
+          <router-link :to="{ name: 'register' }"> Create an account </router-link>
         </v-card-text>
 
         <!-- divider -->
@@ -98,12 +76,7 @@
 
         <!-- social links -->
         <v-card-actions class="d-flex justify-center">
-          <v-btn
-            v-for="link in socialLink"
-            :key="link.icon"
-            icon
-            class="ms-1"
-          >
+          <v-btn v-for="link in socialLink" :key="link.icon" icon class="ms-1">
             <v-icon :color="$vuetify.theme.dark ? link.colorInDark : link.color">
               {{ link.icon }}
             </v-icon>
@@ -120,20 +93,10 @@
     />
 
     <!-- tree -->
-    <v-img
-      class="auth-tree"
-      width="247"
-      height="185"
-      src="@/assets/images/misc/tree.png"
-    ></v-img>
+    <v-img class="auth-tree" width="247" height="185" src="@/assets/images/misc/tree.png"></v-img>
 
     <!-- tree  -->
-    <v-img
-      class="auth-tree-3"
-      width="377"
-      height="289"
-      src="@/assets/images/misc/tree-3.png"
-    ></v-img>
+    <v-img class="auth-tree-3" width="377" height="289" src="@/assets/images/misc/tree-3.png"></v-img>
   </div>
 </template>
 
@@ -146,7 +109,21 @@ export default {
   data() {
     return {
       email: '',
+      username: '',
       password: '',
+      user: undefined,
+      loading: false,
+      message: '',
+    }
+  },
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn
+    },
+  },
+  created() {
+    if (this.loggedIn) {
+      this.$router.push('/dashboard')
     }
   },
   methods: {
@@ -156,6 +133,27 @@ export default {
         .dispatch('login', { email, password })
         .then(() => this.$router.push('/'))
         .catch(err => console.log(err))
+    },
+    handleLogin() {
+      // this.loading = true
+      // this.$validator.validateAll().then(isValid => {
+      //   if (!isValid) {
+      //     this.loading = false
+      //     return
+      //   }
+
+      if (this.username && this.password) {
+        this.$store.dispatch('auth/login', { username: this.username, password: this.password }).then(
+          () => {
+            this.$router.push('/dashboard')
+          },
+          error => {
+            this.loading = false
+            this.message = (error.response && error.response.data) || error.message || error.toString()
+          },
+        )
+      }
+      //   })
     },
   },
   setup() {

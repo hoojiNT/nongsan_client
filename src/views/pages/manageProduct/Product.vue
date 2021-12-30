@@ -7,11 +7,11 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="800px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on" >
-                <v-icon color="white">mdi-plus</v-icon>
-                New Item 
+            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+              <v-icon color="white">mdi-plus</v-icon>
+              New Item
             </v-btn>
-            
+
             <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on"> Import </v-btn>
             <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on"> Export</v-btn>
           </template>
@@ -24,7 +24,7 @@
               <v-container>
                 <v-col>
                   <v-row cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.name" label="Tên NS"></v-text-field>
+                    <v-text-field v-model="editedItem.name" label="Tên sản phẩm"></v-text-field>
                   </v-row>
                   <v-row col="12">
                     <v-col cols="6" sm="6" md="4">
@@ -34,12 +34,77 @@
                       <v-text-field v-model="editedItem.originalPrice" label="Giá vốn"></v-text-field>
                     </v-col>
                   </v-row>
-                  <v-row cols="12" sm="6" md="4">
-                    <v-text-field  label="Tồn kho"></v-text-field>
+                  <v-row>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-menu
+                        ref="refExpirationDate"
+                        v-model="edate"
+                        :close-on-content-click="false"
+                        :return-value.sync="editedItem.expirationDate"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="editedItem.expirationDate"
+                            label="Ngày sản hết hạn"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker v-model="editedItem.expirationDate" no-title scrollable>
+                          <v-spacer></v-spacer>
+                          <v-btn text color="primary" @click="edate = false"> Cancel </v-btn>
+                          <v-btn text color="primary" @click="$refs.refExpirationDate.save(editedItem.expirationDate)">
+                            OK
+                          </v-btn>
+                        </v-date-picker>
+                      </v-menu>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-menu
+                        ref="refManufactureDate"
+                        v-model="mdate"
+                        :close-on-content-click="false"
+                        :return-value.sync="editedItem.expirationDate"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="editedItem.dateManufacturingDate"
+                            label="Ngày sản sản xuất"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker v-model="editedItem.dateManufacturingDate" no-title scrollable>
+                          <v-spacer></v-spacer>
+                          <v-btn text color="primary" @click="mdate = false"> Cancel </v-btn>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.refManufactureDate.save(editedItem.dateManufacturingDate)"
+                          >
+                            OK
+                          </v-btn>
+                        </v-date-picker>
+                      </v-menu>
+                    </v-col>
                   </v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field  label="Đặt hàng"></v-text-field>
-                  </v-col>
+                  <!-- <v-col cols="12" sm="6" md="4">
+                    <v-text-field label="Đặt hàng"></v-text-field>
+                  </v-col> -->
+                  <v-row>
+                    <v-combobox label="Nhà cung cấp"></v-combobox>
+                    <v-combobox label="Loại sản phẩm"></v-combobox>
+                  </v-row>
                 </v-col>
               </v-container>
             </v-card-text>
@@ -78,10 +143,16 @@
 import common from '@/common/common'
 import axios from 'axios'
 const apiURL = common._API_URL + 'api/Product/'
+const apiSupplier = common._API_URL + 'api/Supplier/'
+const apiCategory = common._API_URL + 'api/Category/'
+
 export default {
   data: () => ({
     dialog: false,
     dialogDelete: false,
+    mdate: false,
+    edate: false,
+
     headers: [
       {
         text: 'Mã',
@@ -92,24 +163,41 @@ export default {
       { text: 'Tên NS', value: 'name' },
       { text: 'Giá bán', value: 'price' },
       { text: 'Giá vốn', value: 'originalPrice' },
-      { text: 'Tồn kho', value: 'email' },
+      { text: 'Tồn kho', value: 'expirationDate' },
       { text: 'Chức năng', value: 'actions', sortable: false },
     ],
     products: [],
     editedIndex: -1,
     editedItem: {
-      id: '',
+      id: 0,
       name: '',
-      price: '',
-      originalPrice: '',
-      email: '',
+      price: 0,
+      originalPrice: 0,
+      detail: '',
+      description: '',
+      isDiscount: false,
+      viewCount: 0,
+      discountAmount: 0,
+      dateManufacturingDate: '',
+      expirationDate: '',
+      supplierID: 3,
+      categoryID: 3,
     },
     defaultItem: {
-      id: '',
+      id: 0,
       name: '',
       price: '',
-      originalPrice: '',
-      email: '',
+      originalPrice: 0,
+      detail: '',
+      description: '',
+      isDiscount: false,
+      viewCount: 0,
+      discountAmount: 0,
+      editedItem: '',
+      expirationDate: '',
+      dateManufacturingDate: '',
+      supplierID: 3,
+      categoryID: 3,
     },
   }),
 
@@ -156,11 +244,20 @@ export default {
     deleteItem(item) {
       this.editedIndex = this.products.indexOf(item)
       this.editedItem = { ...item }
+      console.log(this.editedItem)
       this.dialogDelete = true
     },
 
     deleteItemConfirm() {
-      this.products.splice(this.editedIndex, 1)
+      var itemid = this.editedItem.id
+      var edtIdx = this.editedIndex
+      console.log('deleteItemConfirm:', itemid)
+      axios.delete(`${apiURL}DeleteProduct/?id=${itemid}`).then(res => {
+        if (res.status === 200) {
+          this.products.splice(edtIdx, 1)
+          this.closeDelete()
+        }
+      })
       this.closeDelete()
     },
 
@@ -198,11 +295,28 @@ export default {
         axios
           .post(`${apiURL}InsertProduct/`, edtItm)
           .then(res => {
+            if (res.status === 400) {
+              console.log('editedIndex:: ', edtIdx)
+              console.log('this.editedItem:: ', edtItm)
+            }
             if (res.status === 200) {
               this.products.push(edtItm)
             }
           })
-          .catch(err => console.log(err))
+          .catch(error => {
+            if (error.response) {
+              // Request made and server responded
+              console.log(error.response.data)
+              console.log(error.response.status)
+              console.log(error.response.headers)
+            } else if (error.request) {
+              // The request was made but no response was received
+              console.log(error.request)
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              console.log('Error', error.message)
+            }
+          })
       }
       this.close()
     },
